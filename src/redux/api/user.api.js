@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import axios, { all } from "axios";
 
-const server = `https://e-commerse-backend-8cy9.onrender.com`
+const server = import.meta.env.VITE_SERVER
 
 export const userAPI = createApi({
     reducerPath: "userApi",
