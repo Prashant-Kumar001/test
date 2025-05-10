@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import {  IoFilter, IoClose, IoCart } from "react-icons/io5";
+import { IoFilter, IoClose, IoCart } from "react-icons/io5";
 import {
   useGetCategoriesQuery,
   useGetSearchProductQuery,
@@ -26,6 +26,10 @@ function useDebounce(value, delay) {
 }
 
 const Search = () => {
+
+
+
+
   const navigate = useNavigate();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
@@ -241,7 +245,7 @@ const Search = () => {
               {
                 cartList.length > 0 && (
                   <button
-                    className="p-2 rounded-full bg-indigo-600 text-white hover:bg-indigo-700 transition-colors duration-200"
+                    className="p-2 rounded-full bg-indigo-600 text-white cursor-pointer hover:bg-indigo-700 transition-colors duration-200"
                     onClick={() => navigate("/cart")}
                   >
                     <IoCart size={20} />
@@ -282,7 +286,7 @@ const Search = () => {
               </div>
             )}
 
-            <div>
+            <div className="h-[60vh] py-4 overflow-y-auto hide-scroll-bar">
               {isLoading ? (
                 <SkeletonCards count={4} />
               ) : isError ? (
@@ -308,8 +312,7 @@ const Search = () => {
                       <div className="relative w-[50%] md:w-full md:flex justify-center">
                         <Link to={`/product/${product._id}`}>
                           <img
-                            src={`${import.meta.env.VITE_SERVER_URL
-                              }/${product.image.replace(/\\/g, "/")}`}
+                            src={`${import.meta.env.VITE_SERVER}/${product.image.replace(/\\/g, "/")}`}
                             alt={product.name}
                             className=" h-40 object-cover"
                           />
@@ -370,8 +373,8 @@ const Search = () => {
                 whileHover={{ scale: !hasPrevPage ? 1 : 1.05 }}
                 whileTap={{ scale: !hasPrevPage ? 1 : 0.95 }}
                 className={`px-4 py-2 rounded-lg text-white font-medium shadow-md transition-all duration-200 ${hasPrevPage
-                    ? "bg-gray-600 hover:bg-gray-700"
-                    : "bg-gray-400 cursor-not-allowed"
+                  ? "bg-gray-600 hover:bg-gray-700"
+                  : "bg-gray-400 cursor-not-allowed"
                   }`}
               >
                 -
@@ -385,8 +388,8 @@ const Search = () => {
                 whileHover={{ scale: !hasNextPage ? 1 : 1.05 }}
                 whileTap={{ scale: !hasNextPage ? 1 : 0.95 }}
                 className={`px-6 py-2 rounded-lg text-white font-medium shadow-md transition-all duration-200 ${hasNextPage
-                    ? "bg-indigo-600 hover:bg-indigo-700"
-                    : "bg-gray-400 cursor-not-allowed"
+                  ? "bg-indigo-600 hover:bg-indigo-700"
+                  : "bg-gray-400 cursor-not-allowed"
                   }`}
               >
                 +

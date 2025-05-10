@@ -27,12 +27,7 @@ const Shipping = () => {
 
   const [filteredCities, setFilteredCities] = useState([]);
 
-  useEffect(() => {
-    if (cart.length === 0) {
-      toast.error("Please add items to the cart first");
-      navigate("/");
-    }
-  }, [cart, navigate]);
+ 
 
   useEffect(() => {
     if (formData.state) {
@@ -61,7 +56,7 @@ const Shipping = () => {
 
     try {
       const { data } = await axios.post(
-        `https://e-commerse-backend-8cy9.onrender.com/api/v1/payment/create`,
+        `${import.meta.env.VITE_SERVER}/api/v1/payment/create`,
         {
           amount: grandTotal,
         },

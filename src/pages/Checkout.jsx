@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import {
   Elements,
@@ -15,6 +15,14 @@ import { emptyCart } from "../redux/reducer/product.reducer";
 const stripePromise = loadStripe("pk_test_51RAj9706JABAxPu0OX5hk6G2CQcMRBiFkPSHSZmFmu5mbQmZR7zTdsM2L2C4x3ywag030uppXQ8qKRuaovMa1s4P006triytex");
 
 const CheckoutForm = () => {
+
+
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
@@ -35,71 +43,77 @@ const CheckoutForm = () => {
     shippingInfo: formData,
   } = useSelector((state) => state.product);
 
+
+
+
   const [placeOrder] = usePlaceOrderMutation();
 
 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+
     if (!stripe || !elements) return;
-  
+
     setIsProcessing(true);
     setError(null);
 
 
     const newOrder = {
-        user: user._id,
-        orderItems: cart,
-        shippingAddress: {
-          address: formData.address,
-          city: formData.city,
-          state: formData.state,
-          country: formData.country,
-          pinCode: formData.pinCode,
-        },
-        subTotal,
-        shippingPrice: shipping,
-        taxPrice: tax,
-        delivery,
-        discount: discount,
-        totalPrice: grandTotal,
-      };
+      user: user._id,
+      orderItems: cart,
+      shippingAddress: {
+        address: formData.address,
+        city: formData.city,
+        state: formData.state,
+        country: formData.country,
+        pinCode: formData.pinCode,
+      },
+      subTotal,
+      shippingPrice: shipping,
+      taxPrice: tax,
+      delivery,
+      discount: discount,
+      totalPrice: grandTotal,
+    };
 
-  
-      const { paymentIntent, error } = await stripe.confirmPayment({
-        elements,
-        confirmParams: { return_url: window.location.origin },
-        redirect: "if_required",
-      });
-  
+
+    const { paymentIntent, error } = await stripe.confirmPayment({
+      elements,
+      confirmParams: { return_url: window.location.origin },
+      redirect: "if_required",
+    });
+
     if (error) {
       setError(error);
       toast.error(error.message || "Payment failed");
       setIsProcessing(false);
       return;
     }
-  
+
     if (paymentIntent.status === "succeeded") {
       try {
         const response = await placeOrder(newOrder).unwrap();
-  
+
         if (response) {
           toast.success("Order placed successfully!");
           dispatch(emptyCart());
           navigate("/orders", { state: { order: response } });
-          return; 
+          return;
         } else {
           toast.error("Order not created. Please try again.");
         }
-      } catch  {
+      } catch {
         toast.error("Failed to place order");
       }
     } else {
       toast.error("Payment not successful");
     }
-  
+
     setIsProcessing(false);
+
+   
+
   };
   return (
     <form

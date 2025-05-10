@@ -38,10 +38,10 @@ const Header = () => {
         try {
             await signOut(auth);
             dispatch(logout());
-            toast.success("Logged out successfully!", { position: "top-right" });
+            toast.success("Logged out successfully!", { position: "top-left" });
             navigate("/");
         } catch (error) {
-            toast.error("Logout failed. Try again.", { position: "top-right" });
+            toast.error("Logout failed. Try again.", { position: "top-left" });
         }
         setMenuOpen(false);
         setProfileOpen(false);
@@ -51,7 +51,7 @@ const Header = () => {
 
     const handleCartClick = () => {
         if (!cartItems.length) {
-            toast.error("Your cart is empty!", { position: "top-right" });
+            toast.error("Your cart is empty!", { position: "top-center" });
             return;
         }
         navigate("/cart");
