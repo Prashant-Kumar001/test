@@ -26,10 +26,6 @@ const Login = () => {
   const loginHandler = async (e) => {
     e.preventDefault();
 
-    if (!gender || !dob) {
-      toast.error("All fields are required");
-      return;
-    }
 
     setLoader(true);
 
