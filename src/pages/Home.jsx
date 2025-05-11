@@ -7,13 +7,7 @@ import toast from "react-hot-toast"
 import ProductSkeleton from "../components/SkeletonCards";
 
 const Home = () => {
-
-
-  
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
+ 
 
   const { data, isLoading, isError, error } = useGetProductsQuery();
   const { data: userProducts, isLoading: userProductsLoading, isError: userIsError, error: useError } = useGetAllProductsQuery();

@@ -13,23 +13,6 @@ import RevenueDistributionChart from "../chart/RevenueDistributionChart.jsx";
 const Charts = () => {
 
 
-
-  useEffect(() => {
-  if ('scrollRestoration' in window.history) {
-    window.history.scrollRestoration = 'manual';
-  }
-
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-
-  return () => {
-    if ('scrollRestoration' in window.history) {
-      window.history.scrollRestoration = 'auto';
-    }
-  };
-}, []);
-
-
-
   const { user } = useSelector((state) => state.user);
   const pie = usePieQuery({ id: user?._id });
 
@@ -48,9 +31,12 @@ const Charts = () => {
           Dashboard Insights
         </h2>
         {pie.isLoading ? (
-          <div className="space-y-6 max-w-6xl mx-auto">
-            {[...Array(4)].map((_, i) => (
-              <div key={i} className="skeleton h-32 rounded-xl" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6">
+            {[...Array(2)].map((_, i) => (
+              <div
+                key={i}
+                className="h-140 w-full bg-gray-300 animate-pulse rounded"
+              />
             ))}
           </div>
         ) : pie.isError ? (

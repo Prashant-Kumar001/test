@@ -30,7 +30,7 @@ const Order = () => {
 
         {isLoading ? (
           <div className="rounded-lg space-y-7">
-            {[...Array(5)].map((_, i) => (
+            {[...Array(10)].map((_, i) => (
               <div
                 key={i}
                 className="h-8 w-full bg-gray-300 animate-pulse rounded"

@@ -17,10 +17,6 @@ const STATUS_COLORS = {
 const OrderStatusPieChart = ({ status }) => {
 
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   const formattedData = status.map((item) => ({
     name: item._id,
     value: item.count,

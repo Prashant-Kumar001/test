@@ -9,10 +9,32 @@ import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { FaTrash } from "react-icons/fa";
 
+const statusColors = {
+  PENDING: "text-yellow-600",
+  PROCESSING: "text-blue-600",
+  SHIPPED: "text-indigo-600",
+  DELIVERED: "text-green-600",
+  CANCELLED: "text-red-600",
+};
+
+const nextStatusMap = {
+  PENDING: "PROCESSING",
+  PROCESSING: "SHIPPED",
+  SHIPPED: "DELIVERED",
+};
+
+const getNextStatusLabel = (status) => {
+  const next = nextStatusMap[status];
+  return next
+    ? `Mark as ${next.charAt(0) + next.slice(1).toLowerCase()}`
+    : "No further action";
+};
+
 const Transaction = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
+
   const { data, isLoading, isError } = useOrderDetailsQuery(id);
   const [processOrderApi] = useProcessOrderMutation();
   const [deleteOrderApi] = useDeleteOrderMutation();
@@ -27,14 +49,20 @@ const Transaction = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <span className="loading loading-spinner loading-xl"></span>
+        <div className="w-12 h-12 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
       </div>
     );
   }
 
-  if (!data || !data.SingleOrder) return null;
+  if (!data?.SingleOrder) return null;
 
   const { SingleOrder } = data;
+  const currentStatus = SingleOrder.status;
+  const nextStatus = nextStatusMap[currentStatus];
+  const isDisabled =
+    isProcessing ||
+    currentStatus === "DELIVERED" ||
+    currentStatus === "CANCELLED";
 
   const processOrder = async (orderId) => {
     setIsProcessing(true);
@@ -45,9 +73,7 @@ const Transaction = () => {
       }).unwrap();
       toast.success(res?.message || "Order processed successfully");
     } catch (err) {
-      toast.error(err?.data?.message || "Failed to process order", {
-        style: { minWidth: "600px" },
-      });
+      toast.error(err?.data?.message || "Failed to process order");
     } finally {
       setIsProcessing(false);
     }
@@ -65,15 +91,32 @@ const Transaction = () => {
         navigate("/admin/orders");
       }
     } catch (err) {
-      toast.error(err?.data?.message || "Failed to delete order", {
-        style: { minWidth: "600px" },
-      });
+      toast.error(err?.data?.message || "Failed to delete order");
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-white">
+        <div className="w-12 h-12 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-white">
+        <p className="text-red-500 font-semibold">
+          Error: {data?.error?.message || "Failed to load order details."}
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-6">
       <div className="grid md:grid-cols-2 gap-6 max-w-6xl mx-auto">
+        {/* Order Items */}
         <div className="bg-white p-6 rounded-md shadow-md">
           <h2 className="text-xl font-semibold mb-4 text-gray-800 border-b pb-2">
             Order Items
@@ -85,7 +128,10 @@ const Transaction = () => {
               {SingleOrder.orderItems.map((item, index) => (
                 <li key={index} className="flex items-center gap-4">
                   <img
-                    src={`${import.meta.env.VITE_SERVER}/${item.image.replace(/\\/g, "/")}`}
+                    src={`${import.meta.env.VITE_SERVER}/${item.image.replace(
+                      /\\/g,
+                      "/"
+                    )}`}
                     alt={item.name}
                     className="w-16 h-16 object-cover rounded-md"
                   />
@@ -102,6 +148,7 @@ const Transaction = () => {
           )}
         </div>
 
+        {/* Order Info */}
         <div className="bg-white p-6 rounded-md shadow-md flex flex-col gap-4">
           <h2 className="text-xl font-semibold text-gray-800 border-b pb-2">
             Order Info
@@ -123,7 +170,7 @@ const Transaction = () => {
             <p className="text-gray-600">Subtotal: ₹{SingleOrder.subTotal}</p>
             <p className="text-gray-600">Delivery: ₹{SingleOrder.delivery}</p>
             <p className="text-gray-600">
-              Shipping Charges: ₹{SingleOrder.shippingPrice}
+              Shipping: ₹{SingleOrder.shippingPrice}
             </p>
             <p className="text-gray-600">Tax: ₹{SingleOrder.taxPrice}</p>
             <p className="text-gray-600">Discount: ₹{SingleOrder.discount}</p>
@@ -135,32 +182,33 @@ const Transaction = () => {
           <div>
             <h3 className="font-semibold text-gray-700 mb-1">Status Info</h3>
             <p
-              className={`text-sm font-semibold ${SingleOrder.status === "Processing"
-                ? "text-yellow-600"
-                : "text-green-600"
+              className={`text-sm font-semibold ${statusColors[currentStatus] || "text-gray-600"
                 }`}
             >
-              Status: {SingleOrder.status}
+              Status: {currentStatus}
             </p>
           </div>
 
           <div className="flex justify-between items-center mt-4">
             <button
-              disabled={SingleOrder.status === "DELIVERED" || isProcessing}
+              disabled={isDisabled}
               onClick={() => processOrder(SingleOrder._id)}
-              className={`btn btn-primary `}
+              className={`px-4 py-2 rounded-md font-semibold text-white transition cursor-pointer ${isDisabled
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-blue-600 hover:bg-blue-700"
+                }`}
             >
               {isProcessing
                 ? "Processing..."
-                : SingleOrder.status === "Processing"
-                  ? "Mark as Delivered"
-                  : SingleOrder.status === "DELIVERED" ? 'Mark as Shipped' : 'Mark as Processing'}
+                : getNextStatusLabel(currentStatus)}
             </button>
+
             <button
               onClick={() => handleDelete(SingleOrder._id)}
-              className="btn btn-error btn-sm btn-active"
+              className=" cursor-pointer"
+              title="Delete Order"
             >
-              <FaTrash color="white" size={20} />
+              <FaTrash color="red" size={20} />
             </button>
           </div>
         </div>

@@ -9,20 +9,6 @@ import ProductTrendChart from '../chart/ProductTrendChart';
 const LineChat = () => {
 
 
-    useEffect(() => {
-        if ('scrollRestoration' in window.history) {
-            window.history.scrollRestoration = 'manual';
-        }
-
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-
-        return () => {
-            if ('scrollRestoration' in window.history) {
-                window.history.scrollRestoration = 'auto';
-            }
-        };
-    }, []);
-
     const { user } = useSelector((state) => state.user);
     const line = useLineQuery({ id: user?._id });
 
@@ -38,12 +24,13 @@ const LineChat = () => {
 
     return <AdminLayout>
         {line.isLoading ? (
-            <div className="space-y-10.5" >
-                {
-                    [...Array(4)].map((_, i) => (
-                        <div key={i} className="skeleton h-32 rounded-xl" />
-                    ))
-                }
+            <div className="space-y-10.5 overflow-x-auto max-h-[610px] overflow-y-auto custom-scrollbar">
+                {[...Array(4)].map((_, i) => (
+                    <div
+                        key={i}
+                        className="h-55 w-full bg-gray-300 animate-pulse rounded"
+                    />
+                ))}
             </div>
         ) : line.isError ? (
             <p className="text-red-500 font-medium">Error: {line.error?.message}</p>

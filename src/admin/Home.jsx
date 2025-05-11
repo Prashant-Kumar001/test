@@ -34,13 +34,16 @@ const Home = () => {
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">
           Dashboard Overview
         </h2>
-        <div className= "rounded-lg overflow-hidden ">
+        <div className="rounded-lg overflow-hidden ">
           <div className="space-y-6 overflow-x-auto max-h-[560px] overflow-y-auto custom-scrollbar">
             <section className=" rounded-2xl">
               {isLoading ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                   {[...Array(4)].map((_, i) => (
-                    <div key={i} className="skeleton h-32 rounded-xl" />
+                    <div
+                      key={i}
+                      className="h-55 w-full bg-gray-300 animate-pulse rounded"
+                    />
                   ))}
                 </div>
               ) : isError ? (
@@ -92,8 +95,13 @@ const Home = () => {
 
             <section className=" rounded-2xl   ">
               {isLoading ? (
-                <div className="w-full">
-                  <div className="skeleton h-32 rounded-xl" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6">
+                  {[...Array(2)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="h-55 w-full bg-gray-300 animate-pulse rounded"
+                    />
+                  ))}
                 </div>
               ) : isError ? (
                 <p className="text-red-500 font-medium">
@@ -124,9 +132,12 @@ const Home = () => {
 
             <section className=" rounded-2xl   ">
               {isLoading ? (
-                <div className="flex flex-col w-full gap-2.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6">
                   {[...Array(2)].map((_, i) => (
-                    <div key={i} className="skeleton h-32 rounded-xl" />
+                    <div
+                      key={i}
+                      className="h-55 w-full bg-gray-300 animate-pulse rounded"
+                    />
                   ))}
                 </div>
               ) : isError ? (

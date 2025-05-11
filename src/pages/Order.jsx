@@ -45,7 +45,7 @@ const Order = () => {
             <p className="text-gray-500">No orders found.</p>
           ) : (
             <div className="rounded-xl shadow-md border border-gray-200 overflow-hidden">
-              <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 max-h-[70vh]">
+              <div className="overflow-x-auto max-h-[500px] overflow-y-auto custom-scrollbar">
                 <table className="min-w-full divide-y divide-gray-200 text-sm text-left">
                   <thead className="bg-gray-100 text-gray-700 font-semibold">
                     <tr>
