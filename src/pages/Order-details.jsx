@@ -21,13 +21,17 @@ const OrderDetails = () => {
   const SingleOrder = data?.SingleOrder;
 
   const handleCancelOrder = async () => {
-    try {
-      const res = await deleteOrderApi({ orderId: id, userId: user._id }).unwrap();
-      toast.success(res?.message || "Order cancelled successfully");
-      navigate("/orders");
-    } catch (err) {
-      toast.error(err?.data?.message || "Failed to cancel order");
-    }
+
+    alert("Are you sure you want to cancel this order?");
+    alert("This action cannot be undone. coming soon");
+
+    // try {
+    //   const res = await deleteOrderApi({ orderId: id, userId: user._id }).unwrap();
+    //   toast.success(res?.message || "Order cancelled successfully");
+    //   navigate("/orders");
+    // } catch (err) {
+    //   toast.error(err?.data?.message || "Failed to cancel order");
+    // }
   };
 
   if (isLoading) {

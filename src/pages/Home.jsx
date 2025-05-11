@@ -5,9 +5,11 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/reducer/product.reducer";
 import toast from "react-hot-toast"
 import ProductSkeleton from "../components/SkeletonCards";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
- 
+  
+  const navigate = useNavigate();
 
   const { data, isLoading, isError, error } = useGetProductsQuery();
   const { data: userProducts, isLoading: userProductsLoading, isError: userIsError, error: useError } = useGetAllProductsQuery();
@@ -217,7 +219,7 @@ const renderMidProductSection = () => {
               </span>
             </p>
           </div>
-          <button className="mt-3 w-full px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors duration-300 text-sm">
+          <button onClick={() => navigate("/cart")} className="mt-3 cursor-pointer w-full px-4 py-2 bg-pink-600 text-white rounded-md hover:bg-pink-700 transition-colors duration-300 text-sm">
             View Cart
           </button>
         </div>

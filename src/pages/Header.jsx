@@ -52,7 +52,9 @@ const Header = () => {
 
 
     const handleCartClick = () => {
-        alert("you don't have any items in your cart");
+        if (cartItems?.length === 0) {
+            alert("you don't have any items in your cart");
+        }
         navigate("/cart");
     };
 

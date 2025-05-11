@@ -118,6 +118,7 @@ const Cart = () => {
     toast.error(message, { style: { minWidth: "400px" } });
   };
 
+
   return (
     <div className="min-h-screen py-6 px-4 bg-gray-50">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-6">
@@ -141,7 +142,12 @@ const Cart = () => {
                 cart.map((item) => (
                   <CartItem
                     key={item._id}
-                    item={item}
+                    _id={item._id}
+                    image={item.image}
+                    name={item.name}
+                    price={item.price}
+                    quantity={item.quantity}
+                    stock={item.stock}
                     onIncrement={handlerIncrement}
                     onDecrement={handlerDecrement}
                     onDelete={handlerDelete}

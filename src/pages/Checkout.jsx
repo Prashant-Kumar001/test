@@ -85,6 +85,8 @@ const CheckoutForm = () => {
       setError(error);
       toast.error(error.message || "Payment failed");
       setIsProcessing(false);
+      navigate("/");
+      
       return;
     }
 
