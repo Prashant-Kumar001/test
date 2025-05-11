@@ -76,7 +76,7 @@ const Product = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="flex justify-center">
             <img
-              src={`${import.meta.env.VITE_SERVER_URL}/${image.replace(/\\/g, "/")}`}
+              src={`${import.meta.env.VITE_SERVER}/${image.replace(/\\/g, "/")}`}
               alt={name || "Product Image"}
               className="w-52 h-52 md:w-80 md:h-80 object-contain rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300"
             />

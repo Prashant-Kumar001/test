@@ -28,17 +28,6 @@ const Cart = () => {
     discount,
   } = useSelector((state) => state.product);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  useEffect(() => {
-    if (cart.length === 0) {
-      toast.error("Your cart is empty!");
-      navigate("/");
-    }
-  }, [cart]);
-
   const [coupon, setCoupon] = useState("");
   const [isCouponApplied, setIsCouponApplied] = useState(false);
   const [couponMessage, setCouponMessage] = useState("");
@@ -74,7 +63,7 @@ const Cart = () => {
 
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/v1/payment/coupon/apply`,
+        `${import.meta.env.VITE_SERVER}/api/v1/payment/coupon/apply`,
         { code },
         {
           headers: {
@@ -87,7 +76,9 @@ const Cart = () => {
       if (res.data.success) {
         setIsCouponApplied(true);
         setCouponMessage(res.data.message || "Coupon applied successfully!");
-        dispatch(applyCouponDiscount({ discountAmount: res.data.discountAmount || 0 }));
+        dispatch(
+          applyCouponDiscount({ discountAmount: res.data.discountAmount || 0 })
+        );
         toast.success(`Coupon applied! Discount: ₹${res.data.discountAmount}`);
       } else {
         throw new Error("Invalid coupon.");
@@ -98,7 +89,10 @@ const Cart = () => {
       setIsCouponApplied(false);
       dispatch(applyCouponDiscount({ discountAmount: 0 }));
 
-      const message = error.response?.data?.message || error.message || "Error applying coupon";
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Error applying coupon";
       setCouponMessage(message);
       toast.error(message);
     }
@@ -127,10 +121,11 @@ const Cart = () => {
   return (
     <div className="min-h-screen py-6 px-4 bg-gray-50">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-6">
-        {/* Cart Section */}
         <div className="lg:w-2/3 w-full p-4 bg-white rounded-xl border border-gray-200 shadow-sm">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-semibold text-gray-800">Shopping Cart</h2>
+            <h2 className="text-2xl font-semibold text-gray-800">
+              Shopping Cart
+            </h2>
             {cart.length > 0 && (
               <button
                 onClick={handlerClearCart}
@@ -141,23 +136,35 @@ const Cart = () => {
             )}
           </div>
           <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-1 ">
-            {cart.map((item) => (
-              <CartItem
-                key={item._id}
-                {...item}
-                imageUrl={item.image}
-                handlerDecrement={handlerDecrement}
-                handlerIncrement={handlerIncrement}
-                handlerDelete={handlerDelete}
-                handleWarning={handleWarning}
-              />
-            ))}
+            {
+              cart.length > 0 ? (
+                cart.map((item) => (
+                  <CartItem
+                    key={item._id}
+                    item={item}
+                    onIncrement={handlerIncrement}
+                    onDecrement={handlerDecrement}
+                    onDelete={handlerDelete}
+                    handleWarning={handleWarning}
+                  />
+                ))
+              ) : (
+                <div className="text-center text-gray-500">
+                  Your cart is empty.{" "}
+                  <Link to="/" className="text-cyan-600 hover:underline">
+                    Start shopping
+                  </Link>
+                </div>
+              )
+            }
           </div>
         </div>
 
         {/* Summary Section */}
         <div className="lg:w-1/3 w-full p-5 bg-white rounded-xl border border-gray-200 shadow-sm">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">Order Summary</h2>
+          <h2 className="text-xl font-bold text-gray-800 mb-4">
+            Order Summary
+          </h2>
 
           <div className="space-y-2 text-gray-700 text-sm">
             <div className="flex justify-between">
@@ -174,7 +181,9 @@ const Cart = () => {
             </div>
             <div className="flex justify-between">
               <span>Delivery:</span>
-              <span>{totalQuantity === 10 ? "Free" : `₹${delivery.toFixed(2)}`}</span>
+              <span>
+                {totalQuantity === 10 ? "Free" : `₹${delivery.toFixed(2)}`}
+              </span>
             </div>
             <div className="flex justify-between">
               <span>Total Items:</span>
@@ -190,7 +199,7 @@ const Cart = () => {
 
             <div className="flex justify-between border-t pt-2 font-bold text-gray-900">
               <span>Total:</span>
-              <span>₹{grandTotal.toFixed(2)}</span>
+              <span>₹{cart.length > 0 ? grandTotal.toFixed(2) : 0}</span>
             </div>
           </div>
 
@@ -203,19 +212,29 @@ const Cart = () => {
               className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:outline-none"
             />
             {coupon.trim() && couponMessage && (
-              <p className={`mt-2 text-sm flex items-center ${isCouponApplied ? "text-green-600" : "text-red-600"}`}>
+              <p
+                className={`mt-2 text-sm flex items-center ${
+                  isCouponApplied ? "text-green-600" : "text-red-600"
+                }`}
+              >
                 {!isCouponApplied && <VscError className="mr-2" />}
                 {couponMessage}
               </p>
             )}
           </div>
 
-          <Link
-            to="/checkout"
-            className="block w-full mt-4 py-2 bg-indigo-600 text-white text-center rounded-lg hover:bg-indigo-700 transition"
+          <button
+            onClick={() => {
+              if (cart.length === 0) {
+                handleWarning("", "Your cart is empty");
+              } else {
+                navigate("/checkout");
+              }
+            }}
+            className="mt-4 w-full bg-cyan-600 text-white py-2 rounded-md hover:bg-cyan-700 transition duration-200"
           >
             Proceed to Checkout
-          </Link>
+          </button>
         </div>
       </div>
     </div>

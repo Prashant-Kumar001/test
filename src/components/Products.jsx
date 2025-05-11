@@ -15,7 +15,7 @@ const Products = ({ productId, price, name, stock, imageUrl, handler }) => {
 
       <figure className="w-full h-36 sm:h-40 md:h-48 bg-gray-100 flex items-center justify-center overflow-hidden">
         <img
-         src={`https://e-commerse-backend-8cy9.onrender.com/${imageUrl.replace(/\\/g, "/")}`}
+         src={`${import.meta.env.VITE_SERVER}/${imageUrl.replace(/\\/g, "/")}`}
           alt={name}
           className="w-full h-full object-cover p-3 sm:p-4 transition-transform duration-300 group-hover:scale-105"
           loading="lazy"

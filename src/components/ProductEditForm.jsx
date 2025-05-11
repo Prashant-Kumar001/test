@@ -15,7 +15,7 @@ import {
   FaTrash,
   FaImage,
 } from "react-icons/fa";
-import { NewLoader } from "./Loader";
+import Loader from "./Loader";
 import { useSelector } from "react-redux";
 
 const ProductEditForm = ({ productId }) => {

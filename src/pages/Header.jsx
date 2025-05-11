@@ -13,6 +13,8 @@ import { auth } from "../config/firebase";
 import { signOut } from "firebase/auth";
 import { logout } from "../redux/reducer/user.reducer";
 import toast from "react-hot-toast";
+import { AiOutlineDashboard } from "react-icons/ai";
+
 
 const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -50,10 +52,7 @@ const Header = () => {
 
 
     const handleCartClick = () => {
-        if (!cartItems.length) {
-            toast.error("Your cart is empty!", { position: "top-center" });
-            return;
-        }
+        alert("you don't have any items in your cart");
         navigate("/cart");
     };
 
@@ -117,7 +116,7 @@ const Header = () => {
                                         <FaUser size={18} />
                                     </button>
 
-                                    <ul className={`absolute right-0  mt-2 w-30  bg-white rounded-lg shadow-lg py-3  z-50 ${profileOpen ? 'block' : 'hidden'}`}>
+                                    <ul className={`absolute right-0  mt-2  bg-white rounded-lg shadow-lg py-3  z-50 ${profileOpen ? 'block' : 'hidden'}`}>
                                         <li>
                                             <Link to="/profile" onClick={() => setProfileOpen(false)} className="flex items-center px-4 py-2 hover:bg-cyan-50">
                                                 <CgProfile className="text-gray-600" />
@@ -134,7 +133,7 @@ const Header = () => {
                                         {user?.role === "admin" && (
                                             <li>
                                                 <Link to="/admin" onClick={() => setProfileOpen(false)} className="flex items-center px-4 py-2 hover:bg-cyan-50">
-                                                    <FaUser className="text-gray-600" />
+                                                    <AiOutlineDashboard />
                                                     <span className="ml-2">Dashboard</span>
                                                 </Link>
                                             </li>

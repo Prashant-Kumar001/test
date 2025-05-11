@@ -21,8 +21,8 @@ import { loginSuccess, loginFailure } from "./redux/reducer/user.reducer";
 import { getCurrentUser } from "./redux/api/user.api";
 
 
-// import LineChat from "./pages/admin/LineChat";
-// import BarChart from "./pages/admin/BarChart";
+import LineChat from "./chart/LineChat";
+import BarChart from "./chart/BarChart";
 
 
 const Home = lazy(() => import("./pages/Home"));
@@ -42,13 +42,13 @@ const OrderDetails = lazy(() => import("./pages/Order-details"));
 const Checkout = lazy(() => import("./pages/Checkout"));
 
 
-// const AdminHome = lazy(() => import("./pages/admin/Home"));
-// const Create = lazy(() => import("./pages/admin/Create"));
-// const ManageProduct = lazy(() => import("./pages/admin/ManageProduct"));
-// const PieChart = lazy(() => import("./pages/admin/PieChart"));
-// const Orders = lazy(() => import("./pages/admin/Order"));
-// const Transaction = lazy(() => import("./pages/admin/Transaction"));
-// const Users = lazy(() => import("./pages/admin/Users"));
+const AdminHome = lazy(() => import("./admin/Home"));
+const Create = lazy(() => import("./admin/Create"));
+const ManageProduct = lazy(() => import("./admin/ManageProduct"));
+const PieChart = lazy(() => import("./chart/PieChart"));
+const Orders = lazy(() => import("./admin/Order"));
+const Transaction = lazy(() => import("./admin/Transaction"));
+const Users = lazy(() => import("./admin/Users"));
 
 const AppContent = () => {
   const dispatch = useDispatch();
@@ -101,7 +101,7 @@ const AppContent = () => {
               <Route path="/pay" element={<Checkout />} />
             </Route>
 
-            {/* <Route
+            <Route
               element={
                 <Protected
                   isAuthenticated={!!user}
@@ -119,7 +119,7 @@ const AppContent = () => {
               <Route path="/admin/bar" element={<BarChart />} />
               <Route path="/admin/orders" element={<Orders />} />
               <Route path="/admin/transaction/:id" element={<Transaction />} />
-            </Route> */}
+            </Route>
 
             <Route path="*" element={<NotFound />} />
           </Routes>

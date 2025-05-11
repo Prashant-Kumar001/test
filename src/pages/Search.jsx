@@ -217,7 +217,7 @@ const Search = () => {
           <motion.aside
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
-            className="hidden md:block w-full md:w-72 bg-white rounded-2xl shadow-xl p-6 sticky top-6 h-fit"
+            className="hidden md:block w-full md:w-72 bg-white rounded-2xl shadow-xl p-6 sticky top-24 h-fit"
           >
             <FilterSection
               category={category}
@@ -286,7 +286,7 @@ const Search = () => {
               </div>
             )}
 
-            <div className="h-[60vh] py-4 overflow-y-auto hide-scroll-bar">
+            <div className="h-[70vh] py-4 overflow-y-auto custom-scrollbar">
               {isLoading ? (
                 <SkeletonCards count={4} />
               ) : isError ? (
@@ -347,7 +347,7 @@ const Search = () => {
                           .includes(product._id) ? (
                           <button
                             onClick={() => navigate("/cart")}
-                            className="btn btn-secondary btn-block btn-soft"
+                            className="cursor-pointer bg-pink-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-pink-700 transition-colors duration-200"
                           >
                             go to cart
                           </button>
@@ -397,34 +397,6 @@ const Search = () => {
             </div>
           </div>
         </div>
-        {/* {
-          cart.length > 0 && (
-            <div className="hidden md:block  fixed bottom-14 rounded-2xl left-28">
-              <div className="w-[300px] h-[100px] overflow-scroll hide-scroll-bar">
-                {
-                  cart.map((item) => (
-                    <div key={item._id} className="w-full bg-white">
-                      <div className="grid grid-cols-2 items-center gap-2 rounded-2xl border-b p-4">
-                        <img src={img} alt={item.name} className="w-12 h-12 object-fill" />
-                        <div className="text-[12px]">
-                          <h1 >{item?.name}</h1>
-                          <p className="font-semibold">price: {item.price}</p>
-                          <div className="flex gap-1.5">
-                            <button className="w-7 h-7 cursor-pointer rounded-full bg-indigo-900 text-white text-[18px]">+</button>
-                            <button className="w-7 h-7 cursor-pointer rounded-full bg-indigo-900 text-white text-[18px]">-</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                }
-              </div>
-              <div className="">
-                <p>Total: 5000</p>
-              </div>
-            </div>
-          )
-        } */}
       </div>
     </div>
   );

@@ -1,6 +1,12 @@
 import React from "react";
 
 const Profile = ({ user }) => {
+
+ const editProfile = (id) => {
+    alert("currently this feature is not available");
+ }
+    
+
     return (
         <div className=" min-h-screen p-6 w-full max-w-5xl mx-auto  flex flex-col items-center">
             <h1 className="text-4xl font-bold text-gray-800 mb-12 tracking-tight capitalize">
@@ -9,9 +15,9 @@ const Profile = ({ user }) => {
 
             <div className="bg-white w-full max-w-2xl rounded-xl shadow-lg p-8 flex flex-col items-center space-y-6 font-montserrat">
                 <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden border-4 border-cyan-500">
-                    {user?.photoURL ? (
+                    {user?.photo ? (
                         <img
-                            src={user.photoURL}
+                            src={user.photo}
                             alt="Profile"
                             className="w-full h-full object-cover"
                             loading="lazy"
@@ -48,7 +54,7 @@ const Profile = ({ user }) => {
                     </div>
                 </div>
 
-                <button className="mt-6 bg-cyan-600 text-white px-6 py-2 rounded-lg hover:bg-cyan-700 transition-colors duration-200 shadow-md">
+                <button onClick={() => editProfile(user._id)} className="mt-6 bg-cyan-600 text-white px-6 py-2 rounded-lg hover:bg-cyan-700 transition-colors duration-200 shadow-md">
                     Edit Profile
                 </button>
             </div>
