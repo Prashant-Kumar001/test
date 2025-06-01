@@ -19,7 +19,7 @@ const SixMonthProductBarChart = ({ sixMonthProducts }) => {
     .reverse(); // So it shows from oldest to most recent
 
   return (
-    <div className="bg-white p-6 rounded-2xl  w-full">
+    <div className="bg-white p-6 border-t-2 w-full">
       <h2 className="text-xl font-semibold text-gray-800 mb-4">
         Product Orders - Last 6 Months
       </h2>

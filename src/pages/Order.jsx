@@ -15,7 +15,6 @@ const Order = () => {
   );
 
   const orders = data?.orders || [];
-  const SERVER_URL = import.meta.env.VITE_SERVER || "http://localhost:5000";
 
   const handleManage = (id) => {
     navigate(`/order/${id}`);
@@ -76,10 +75,10 @@ const Order = () => {
                                 <a
                                   target="_blank"
                                   rel="noreferrer"
-                                  href={`${SERVER_URL}/${item.image?.replace(/\\/g, "/")}`}
+                                  href={item.image}
                                 >
                                   <img
-                                    src={`${SERVER_URL}/${item.image?.replace(/\\/g, "/")}`}
+                                    src={item.image}
                                     alt={item.name}
                                     className="w-12 h-12 object-cover rounded-md"
                                   />

@@ -5,12 +5,14 @@ import { userSlice } from "./reducer/user.reducer";
 import { productSlice } from "./reducer/product.reducer";
 import { adminApi } from "./api/admin.api";
 import { orderApi } from "./api/order.api";
+import { CouponApi } from "./api/coupon.api";
 export const store = configureStore({
   reducer: {
     [userAPI.reducerPath]: userAPI.reducer,
     [productApi.reducerPath]: productApi.reducer,
     [adminApi.reducerPath]: adminApi.reducer,
     [orderApi.reducerPath]: orderApi.reducer,
+    [CouponApi.reducerPath]: CouponApi.reducer,
     user: userSlice.reducer,
     product: productSlice.reducer,
   },
@@ -21,5 +23,6 @@ export const store = configureStore({
       .concat(productApi.middleware)
       .concat(userAPI.middleware)
       .concat(adminApi.middleware)
-      .concat(orderApi.middleware),
+      .concat(orderApi.middleware)
+      .concat(CouponApi.middleware),
 });

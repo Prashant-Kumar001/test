@@ -19,7 +19,7 @@ const TwelveMonthOrdersBarChart = ({ twelveMonthOrders }) => {
     .reverse(); // Reverse to show from oldest to newest
 
   return (
-    <div className="bg-white p-6 rounded-2xl  w-full">
+    <div className="bg-white p-6 border-t-2  w-full">
       <h2 className="text-xl font-semibold text-gray-800 mb-4">
         Orders - Last 12 Months
       </h2>

@@ -11,8 +11,6 @@ html, body {
   overflow: auto;
   box-sizing: border-box;
   font-family: "Lato", sans-serif;
-  background-color: #f0f0f0;
-  color: #333;
   scrollbar-width: none; 
   -ms-overflow-style: none;
 }
@@ -22,9 +20,7 @@ html::-webkit-scrollbar,
 body::-webkit-scrollbar {
   display: none;
 }
-.hide-scrollbar {
-  overflow: hidden;
-}
+
 
 .font-lato {
   font-family: "Lato", sans-serif;
@@ -68,4 +64,7 @@ body::-webkit-scrollbar {
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #db2777; /* Tailwind pink-600 */
+}
+.bg_blur{
+  backdrop-filter: blur(10px);
 }

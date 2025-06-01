@@ -138,7 +138,7 @@ const RevenueDistributionChart = ({ revenueDistribution }) => {
 
   return (
     <div className="bg-gradient-to-br from-white to-gray-50 p-2 rounded-xl 
-      border border-gray-100  transition-shadow duration-300">
+       border-gray-100  ">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold text-gray-800">
           Revenue Distribution

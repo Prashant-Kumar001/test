@@ -41,9 +41,10 @@ const Login = () => {
         dob,
       }).unwrap();
 
+
       if (res?.success) {
         toast.success("Login successful");
-        dispatch(loginSuccess(res?.user?.user));
+        dispatch(loginSuccess(res?.user));
         navigate("/");
       } else {
         toast.error(res?.message || "Login failed");

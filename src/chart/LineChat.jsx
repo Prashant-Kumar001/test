@@ -35,8 +35,8 @@ const LineChat = () => {
         ) : line.isError ? (
             <p className="text-red-500 font-medium">Error: {line.error?.message}</p>
         ) : (
-            <div className='bg-white rounded-lg  overflow-hidden'>
-                <section className="  space-y-1.5 overflow-x-auto max-h-[610px] overflow-y-auto custom-scrollbar  ">
+            <div className='bg-white shadow rounded-lg  overflow-hidden'>
+                <section className="   space-y-1.5 overflow-x-auto max-h-[93vh] overflow-y-auto custom-scrollbar  ">
                     <DiscountTrendLineChart data={discount} />
                     <MonthlyOrderTrendChart data={orders} />
                     <ProductTrendChart data={products} />

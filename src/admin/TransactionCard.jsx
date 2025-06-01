@@ -35,7 +35,7 @@ const TransactionCard = ({ transactions }) => {
                   {tx._id.toUpperCase()}
                 </p>
                 <p className="text-gray-500 text-xs">Quantity: {tx.quantity}</p>
-                <p className="text-gray-500 text-xs">Discount: {tx.discount}%</p>
+                <p className="text-gray-500 text-xs">Discount: {tx.discount}</p>
               </div>
             </div>
 

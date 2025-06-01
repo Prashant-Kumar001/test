@@ -40,6 +40,8 @@ const Transaction = () => {
   const [deleteOrderApi] = useDeleteOrderMutation();
   const [isProcessing, setIsProcessing] = useState(false);
 
+
+
   useEffect(() => {
     if (isError) {
       navigate("/not-found");
@@ -54,10 +56,10 @@ const Transaction = () => {
     );
   }
 
-  if (!data?.SingleOrder) return null;
+  if (!data?.singleOrder) return null;
 
-  const { SingleOrder } = data;
-  const currentStatus = SingleOrder.status;
+  const { singleOrder } = data;
+  const currentStatus = singleOrder.status;
   const nextStatus = nextStatusMap[currentStatus];
   const isDisabled =
     isProcessing ||
@@ -121,20 +123,20 @@ const Transaction = () => {
           <h2 className="text-xl font-semibold mb-4 text-gray-800 border-b pb-2">
             Order Items
           </h2>
-          {SingleOrder.orderItems.length === 0 ? (
+          {singleOrder.orderItems.length === 0 ? (
             <p className="text-gray-500">No items found.</p>
           ) : (
             <ul className="space-y-4">
-              {SingleOrder.orderItems.map((item, index) => (
+              {singleOrder.orderItems.map((item, index) => (
                 <li key={index} className="flex items-center gap-4">
-                  <img
-                    src={`${import.meta.env.VITE_SERVER}/${item.image.replace(
-                      /\\/g,
-                      "/"
-                    )}`}
-                    alt={item.name}
-                    className="w-16 h-16 object-cover rounded-md"
-                  />
+                  {item.image && (
+                    <img
+                      key={index}
+                      src={item.image}
+                      alt={item.name}
+                      className="w-16 h-16 object-cover rounded-md"
+                    />
+                  )}
                   <div>
                     <p className="font-medium text-gray-800">{item.name}</p>
                     <p className="text-gray-600">
@@ -156,26 +158,26 @@ const Transaction = () => {
 
           <div>
             <h3 className="font-semibold text-gray-700 mb-1">User Info</h3>
-            <p className="text-gray-600">Name: {SingleOrder.user?.username}</p>
+            <p className="text-gray-600">Name: {singleOrder.user?.username}</p>
             <p className="text-gray-600">
-              Address: {SingleOrder.shippingAddress?.address},{" "}
-              {SingleOrder.shippingAddress?.city},{" "}
-              {SingleOrder.shippingAddress?.state},{" "}
-              {SingleOrder.shippingAddress?.country}
+              Address: {singleOrder.shippingAddress?.address},{" "}
+              {singleOrder.shippingAddress?.city},{" "}
+              {singleOrder.shippingAddress?.state},{" "}
+              {singleOrder.shippingAddress?.country}
             </p>
           </div>
 
           <div>
             <h3 className="font-semibold text-gray-700 mb-1">Amount Info</h3>
-            <p className="text-gray-600">Subtotal: ₹{SingleOrder.subTotal}</p>
-            <p className="text-gray-600">Delivery: ₹{SingleOrder.delivery}</p>
+            <p className="text-gray-600">Subtotal: ₹{singleOrder.subTotal}</p>
+            <p className="text-gray-600">Delivery: ₹{singleOrder.delivery}</p>
             <p className="text-gray-600">
-              Shipping: ₹{SingleOrder.shippingPrice}
+              Shipping: ₹{singleOrder.shippingPrice}
             </p>
-            <p className="text-gray-600">Tax: ₹{SingleOrder.taxPrice}</p>
-            <p className="text-gray-600">Discount: ₹{SingleOrder.discount}</p>
+            <p className="text-gray-600">Tax: ₹{singleOrder.taxPrice}</p>
+            <p className="text-gray-600">Discount: ₹{singleOrder.discount}</p>
             <p className="font-bold text-gray-800">
-              Total: ₹{SingleOrder.totalPrice}
+              Total: ₹{singleOrder.totalPrice}
             </p>
           </div>
 
@@ -192,7 +194,7 @@ const Transaction = () => {
           <div className="flex justify-between items-center mt-4">
             <button
               disabled={isDisabled}
-              onClick={() => processOrder(SingleOrder._id)}
+              onClick={() => processOrder(singleOrder._id)}
               className={`px-4 py-2 rounded-md font-semibold text-white transition cursor-pointer ${isDisabled
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-blue-600 hover:bg-blue-700"
@@ -204,7 +206,7 @@ const Transaction = () => {
             </button>
 
             <button
-              onClick={() => handleDelete(SingleOrder._id)}
+              onClick={() => handleDelete(singleOrder._id)}
               className=" cursor-pointer"
               title="Delete Order"
             >

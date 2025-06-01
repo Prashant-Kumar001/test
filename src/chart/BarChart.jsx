@@ -33,7 +33,7 @@ const BarChat = () => {
         <p className="text-red-500 font-medium">Error: {bar.error?.message}</p>
       ) : (
         <div className="bg-white rounded-lg shadow overflow-hidden">
-          <section className="flex flex-col gap-6 overflow-x-auto max-h-[610px] overflow-y-auto custom-scrollbar">
+          <section className="flex flex-col gap-6 overflow-x-auto max-h-[93vh] overflow-y-auto custom-scrollbar">
             <SixMonthRevenueBarChart sixMonthOrders={sixMonthOrders} />
             <SixMonthProductBarChart sixMonthProducts={sixMonthProducts} />
             <SixMonthUserBarChart sixMonthUsers={sixMonthUsers} />

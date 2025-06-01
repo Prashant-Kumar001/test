@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useOrderDetailsQuery, useDeleteOrderMutation } from "../redux/api/order.api";
 import { SingleCardSkeleton } from "../components/SkeletonCards";
-import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
 
 const OrderDetails = () => {
   const { id } = useParams();
@@ -12,26 +12,31 @@ const OrderDetails = () => {
   const { data, isLoading, isError } = useOrderDetailsQuery(id);
   const [deleteOrderApi] = useDeleteOrderMutation();
 
+
   useEffect(() => {
     if (isError) {
       navigate("/not-found");
     }
   }, [isError, navigate]);
 
-  const SingleOrder = data?.SingleOrder;
+  console.log("Order Details Data:", data);
+
+
+  const SingleOrder = data?.singleOrder;
 
   const handleCancelOrder = async () => {
 
     alert("Are you sure you want to cancel this order?");
     alert("This action cannot be undone. coming soon");
 
-    // try {
-    //   const res = await deleteOrderApi({ orderId: id, userId: user._id }).unwrap();
-    //   toast.success(res?.message || "Order cancelled successfully");
-    //   navigate("/orders");
-    // } catch (err) {
-    //   toast.error(err?.data?.message || "Failed to cancel order");
-    // }
+    try {
+      const res = await deleteOrderApi({ orderId: id, userId: user._id }).unwrap();
+      console.log(res)
+      toast.success(res?.message || "Order cancelled successfully");
+      navigate("/orders");
+    } catch (err) {
+      toast.error(err?.data?.message || "Failed to cancel order");
+    }
   };
 
   if (isLoading) {
@@ -60,7 +65,6 @@ const OrderDetails = () => {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Order Items */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-gray-700">Items</h3>
             {SingleOrder.orderItems?.length > 0 ? (
@@ -68,11 +72,7 @@ const OrderDetails = () => {
                 {SingleOrder.orderItems.map((item, i) => (
                   <li key={i} className="flex items-center gap-4">
                     <img
-                      src={
-                        item.image
-                          ? `${import.meta.env.VITE_SERVER}/${item.image.replace(/\\/g, "/")}`
-                          : "/placeholder.png"
-                      }
+                      src={item.image}
                       alt={item.name}
                       className="w-16 h-16 object-cover rounded"
                     />
@@ -101,9 +101,9 @@ const OrderDetails = () => {
               <p>
                 <strong>Address:</strong>{" "}
                 {[SingleOrder.shippingAddress?.address,
-                  SingleOrder.shippingAddress?.city,
-                  SingleOrder.shippingAddress?.state,
-                  SingleOrder.shippingAddress?.country]
+                SingleOrder.shippingAddress?.city,
+                SingleOrder.shippingAddress?.state,
+                SingleOrder.shippingAddress?.country]
                   .filter(Boolean)
                   .join(", ")}{" "}
                 - {SingleOrder.shippingAddress?.pinCode}

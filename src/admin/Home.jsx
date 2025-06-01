@@ -13,6 +13,7 @@ const Home = () => {
   const { user } = useSelector((state) => state.user);
   const statistics = useGetAdminStatisticsQuery({ id: user?._id });
 
+
   const stats = statistics.data?.stats?.lifetimeStats || {};
   const inventory = statistics.data?.stats?.inventory || [];
   const lastSixMonthRevenueTrend =
@@ -31,11 +32,8 @@ const Home = () => {
   return (
     <AdminLayout>
       <>
-        <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-          Dashboard Overview
-        </h2>
-        <div className="rounded-lg overflow-hidden ">
-          <div className="space-y-6 overflow-x-auto max-h-[560px] overflow-y-auto custom-scrollbar">
+        <div className="rounded-lg overflow-hidden shadow">
+          <div className="space-y-6 overflow-x-auto max-h-[93vh] overflow-y-auto custom-scrollbar">
             <section className=" rounded-2xl">
               {isLoading ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">

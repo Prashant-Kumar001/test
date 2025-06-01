@@ -8,7 +8,7 @@ const Profile = ({ user }) => {
     
 
     return (
-        <div className=" min-h-screen p-6 w-full max-w-5xl mx-auto  flex flex-col items-center">
+        <div className=" min-h-screen p-6 w-full max-w-5xl mx-auto overflow-x-hidden  flex flex-col items-center">
             <h1 className="text-4xl font-bold text-gray-800 mb-12 tracking-tight capitalize">
                 Your Profile
             </h1>

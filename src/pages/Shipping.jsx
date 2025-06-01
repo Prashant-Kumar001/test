@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoArrowBackCircle } from "react-icons/io5";
 import { motion } from "framer-motion";
@@ -11,6 +11,17 @@ import { saveShippingInfo } from "../redux/reducer/product.reducer.js";
 import axios from "axios";
 
 const Shipping = () => {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    if (cart.length === 0) {
+      navigate("/");
+    }
+  }, []);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -206,7 +217,7 @@ const Shipping = () => {
               whileTap={{ scale: 0.95 }}
               type="submit"
               disabled={isLoading}
-              className={`w-full py-3 px-4 rounded-lg font-semibold focus:ring-4 focus:ring-purple-200 transition-all duration-300 shadow-md 
+              className={`w-full py-3 px-4 rounded-lg font-semibold focus:ring-4 cursor-pointer focus:ring-purple-200 transition-all duration-300 shadow-md 
     ${
       isLoading
         ? "bg-gray-400 cursor-not-allowed"

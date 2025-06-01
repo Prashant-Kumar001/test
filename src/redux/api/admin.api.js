@@ -27,7 +27,6 @@ export const adminApi = createApi({
         line: builder.query({
             query: ({ id }) => `line/?id=${id}`,
             keepUnusedDataFor: 0
-
         }),
     }),
 });

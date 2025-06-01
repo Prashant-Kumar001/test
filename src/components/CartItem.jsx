@@ -17,13 +17,14 @@ const CartItem = ({
 }) => {
 
 
+
   return (
     <>
       <div className="flex md:flex-row flex-col md:items-center justify-between font-montserrat gap-4">
         <div className="flex justify-between items-center gap-4">
           <img
-            className="w-23 h-23 rounded "
-            src={`${import.meta.env.VITE_SERVER}/${image?.replace(/\\/g, "/")}`}
+            className="w-23 h-23 object-cover rounded "
+            src={image}
             alt={name}
           />
           <article className="flex flex-col">

@@ -15,8 +15,19 @@ import axios from "axios";
 import debounce from "lodash/debounce";
 
 const Cart = () => {
+
+
+  useEffect(() => {
+    document.title = "Cart | E-commerce";
+  }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { user } = useSelector((state) => state.user);
   const {
     cart,
     totalQuantity,
@@ -27,6 +38,8 @@ const Cart = () => {
     grandTotal,
     discount,
   } = useSelector((state) => state.product);
+
+
 
   const [coupon, setCoupon] = useState("");
   const [isCouponApplied, setIsCouponApplied] = useState(false);
@@ -63,15 +76,7 @@ const Cart = () => {
 
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_SERVER}/api/v1/payment/coupon/apply`,
-        { code },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          cancelToken: source.token,
-        }
-      );
+        `${import.meta.env.VITE_SERVER}/api/v1/payment/coupon/apply?code=${code}&id=${user._id}`,);
 
       if (res.data.success) {
         setIsCouponApplied(true);
@@ -122,7 +127,7 @@ const Cart = () => {
   return (
     <div className="min-h-screen py-6 px-4 bg-gray-50">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-6">
-        <div className="lg:w-2/3 w-full p-4 bg-white rounded-xl border border-gray-200 shadow-sm">
+        <div className="lg:w-2/3 w-full p-4 bg-white rounded-xl border border-gray-200 ">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-semibold text-gray-800">
               Shopping Cart
@@ -167,7 +172,7 @@ const Cart = () => {
         </div>
 
         {/* Summary Section */}
-        <div className="lg:w-1/3 w-full p-5 bg-white rounded-xl border border-gray-200 shadow-sm">
+        <div className="lg:w-1/3 w-full p-5 bg-white rounded-xl border border-gray-200 ">
           <h2 className="text-xl font-bold text-gray-800 mb-4">
             Order Summary
           </h2>
@@ -211,17 +216,17 @@ const Cart = () => {
 
           <div className="mt-4">
             <input
+              disabled
               type="text"
               placeholder="Enter Coupon Code"
               value={coupon}
               onChange={(e) => setCoupon(e.target.value.toUpperCase())}
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              className="w-full p-2 disabled:cursor-not-allowed border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:outline-none"
             />
             {coupon.trim() && couponMessage && (
               <p
-                className={`mt-2 text-sm flex items-center ${
-                  isCouponApplied ? "text-green-600" : "text-red-600"
-                }`}
+                className={`mt-2 text-sm flex items-center ${isCouponApplied ? "text-green-600" : "text-red-600"
+                  }`}
               >
                 {!isCouponApplied && <VscError className="mr-2" />}
                 {couponMessage}
@@ -237,7 +242,8 @@ const Cart = () => {
                 navigate("/checkout");
               }
             }}
-            className="mt-4 w-full bg-cyan-600 text-white py-2 rounded-md hover:bg-cyan-700 transition duration-200"
+            disabled={cart.length === 0}
+            className="mt-4 w-full cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 bg-cyan-600 text-white py-2 rounded-md hover:bg-cyan-700 transition duration-200"
           >
             Proceed to Checkout
           </button>

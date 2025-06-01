@@ -10,9 +10,11 @@ import toast from "react-hot-toast";
 import { addToCart } from "../redux/reducer/product.reducer";
 import { useDispatch, useSelector } from "react-redux";
 import SkeletonCards from "../components/SkeletonCards";
+import { useSearchParams } from "react-router-dom";
 
 function useDebounce(value, delay) {
   const [debouncedValue, setDebouncedValue] = useState(value);
+
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -26,12 +28,20 @@ function useDebounce(value, delay) {
 }
 
 const Search = () => {
-
-
-
-
   const navigate = useNavigate();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get("category");
+
+  useEffect(() => {
+    if (query) {
+      setCategory(query)
+    }
+    return () => {
+      setCategory('')
+    };
+  }, [query])
+
 
   const dispatch = useDispatch();
   const { cart: cartList } = useSelector((state) => state.product);
@@ -175,10 +185,9 @@ const Search = () => {
     appliedFilters.push({ key: "search", label: `Search: ${search}` });
 
   return (
-    <div className="min-h-screen font-montserrat bg-gray-100 py-6 px-4 sm:px-6 lg:px-8 font-sans">
+    <div className=" font-montserrat  py-6 px-4 sm:px-6 lg:px-8 ">
       <div className="max-w-7xl mx-auto">
         <div className="md:hidden flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold text-gray-900">Filters</h2>
           <button
             onClick={() => setIsFilterOpen(!isFilterOpen)}
             className="p-2 rounded-full bg-indigo-600 text-white hover:bg-indigo-700 transition-colors duration-200"
@@ -217,7 +226,7 @@ const Search = () => {
           <motion.aside
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
-            className="hidden md:block w-full md:w-72 bg-white rounded-2xl shadow-xl p-6 sticky top-24 h-fit"
+            className="hidden md:block border border-gray-100 w-full md:w-72 bg-white rounded-2xl  p-6 sticky top-24 h-fit"
           >
             <FilterSection
               category={category}
@@ -237,26 +246,21 @@ const Search = () => {
             />
           </motion.aside>
 
-          <div className="flex-1">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-bold text-gray-900 md:block hidden">
-                Products
-              </h2>
-              {
-                cartList.length > 0 && (
-                  <button
-                    className="p-2 rounded-full bg-indigo-600 text-white cursor-pointer hover:bg-indigo-700 transition-colors duration-200"
-                    onClick={() => navigate("/cart")}
-                  >
-                    <IoCart size={20} />
-                  </button>
-                )
-              }
+          <div className="flex-1 relative">
+            <div className="flex justify-between items-center relative  mb-4">
+              {cartList.length > 0 && (
+                <button
+                  className="p-2 absolute rounded-full bg-indigo-600 text-white cursor-pointer hover:bg-indigo-700 transition-colors duration-200"
+                  onClick={() => navigate("/cart")}
+                >
+                  <IoCart size={20} />
+                </button>
+              )}
             </div>
 
             {appliedFilters.length > 0 && (
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                <h3 className="text-lg font-semibold text-gray-800 mb-2  ">
                   Applied Filters:
                 </h3>
                 <div className="flex flex-wrap gap-2">
@@ -285,85 +289,86 @@ const Search = () => {
                 </div>
               </div>
             )}
-
-            <div className="h-[70vh] py-4 overflow-y-auto custom-scrollbar">
-              {isLoading ? (
-                <SkeletonCards count={4} />
-              ) : isError ? (
-                <div className="flex justify-center items-center h-72 bg-white rounded-2xl shadow-lg p-6">
-                  <p className="text-red-600 text-xl font-semibold">
-                    Error: {error?.message || "Something went wrong"}
-                  </p>
-                </div>
-              ) : !data?.products || data?.products.length === 0 ? (
-                <div className="flex justify-center items-center h-72 bg-white rounded-2xl shadow-lg p-6">
-                  <p className="text-gray-600 text-xl font-semibold">
-                    No products found
-                  </p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                  {data?.products?.map((product) => (
-                    <motion.div
-                      key={product._id}
-                      whileTap={{ scale: 0.97 }}
-                      className="bg-white p-2 flex md:flex-col items-center justify-center rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100"
-                    >
-                      <div className="relative w-[50%] md:w-full md:flex justify-center">
-                        <Link to={`/product/${product._id}`}>
-                          <img
-                            src={`${import.meta.env.VITE_SERVER}/${product.image.replace(/\\/g, "/")}`}
-                            alt={product.name}
-                            className=" h-40 object-cover"
-                          />
-                        </Link>
-                        {product.stock === 0 && (
-                          <span className="absolute top-2 right-1 bg-red-500 text-white text-[10px] font-semibold px-1 py-1 rounded-full shadow-sm">
-                            Sold Out
-                          </span>
-                        )}
-                        {product.stock > 0 && product.stock < 5 && (
-                          <span className="absolute top-2 right-1 bg-yellow-400 text-gray-800 text-[10px] font-semibold px-1 py-1 rounded-full shadow-sm">
-                            Low Stock
-                          </span>
-                        )}
-                      </div>
-                      <div className="space-y-1 flex flex-col h-full justify-center  items-center md:items-center md:w-full flex-1">
-                        <h3 className="text-[12px] md:text-[14px] font-bold text-gray-900 truncate">
-                          {product.name.length > 20
-                            ? `${product.name.slice(0, 20)}...`
-                            : `${product.name}`}
-                        </h3>
-                        <p className="text-sm font-medium text-indigo-600">
-                          ${product.price.toFixed(2)}
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          {product.stock > 0
-                            ? `${product.stock} in stock`
-                            : "Out of stock"}
-                        </p>
-                        {cartList
-                          .map((item) => item._id)
-                          .includes(product._id) ? (
-                          <button
-                            onClick={() => navigate("/cart")}
-                            className="cursor-pointer bg-pink-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-pink-700 transition-colors duration-200"
-                          >
-                            go to cart
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => addToCartHandler(product._id)}
-                            className="cursor-pointer bg-indigo-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200"
-                          >
-                            Add to Cart
-                          </button>
-                        )}
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              )}
+            <div className="overflow-hidden rounded-lg">
+              <div className="h-[70vh]  overflow-auto custom-scrollbar">
+                {isLoading ? (
+                  <SkeletonCards count={4} />
+                ) : isError ? (
+                  <div className="flex justify-center items-center h-72 bg-white rounded-2xl shadow-lg p-6">
+                    <p className="text-red-600 text-xl font-semibold">
+                      Error: {error?.message || "Something went wrong"}
+                    </p>
+                  </div>
+                ) : !data?.products || data?.products.length === 0 ? (
+                  <div className="flex justify-center items-center h-72 bg-white rounded-2xl shadow-lg p-6">
+                    <p className="text-gray-600 text-xl font-semibold">
+                      No products found
+                    </p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 p-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {data?.products?.map((product) => (
+                      <motion.div
+                        key={product._id}
+                        whileTap={{ scale: 0.97 }}
+                        className="bg-white p-2 flex md:flex-col items-center justify-center rounded-xl  hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100"
+                      >
+                        <div className="relative w-[50%] md:w-full md:flex justify-center">
+                          <Link to={`/product/view/${product._id}`}>
+                            <img
+                              src={product.image[0].secure_url}
+                              alt={product.name}
+                              className=" h-40 object-cover  "
+                            />
+                          </Link>
+                          {product.stock === 0 && (
+                            <span className="absolute top-2 right-1 bg-red-500 text-white text-[10px] font-semibold px-1 py-1 rounded-full shadow-sm">
+                              Sold Out
+                            </span>
+                          )}
+                          {product.stock > 0 && product.stock < 5 && (
+                            <span className="absolute top-2 right-1 bg-yellow-400 text-gray-800 text-[10px] font-semibold px-1 py-1 rounded-full shadow-sm">
+                              Low Stock
+                            </span>
+                          )}
+                        </div>
+                        <div className="space-y-1 flex flex-col h-full justify-center  items-center md:items-center md:w-full flex-1">
+                          <h3 className="text-[12px] md:text-[14px] font-bold text-gray-900 truncate">
+                            {product.name.length > 20
+                              ? `${product.name.slice(0, 20)}...`
+                              : `${product.name}`}
+                          </h3>
+                          <p className="text-sm font-medium text-indigo-600">
+                            ${product.price.toFixed(2)}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            {product.stock > 0
+                              ? `${product.stock} in stock`
+                              : "Out of stock"}
+                          </p>
+                          {cartList
+                            .map((item) => item._id)
+                            .includes(product._id) ? (
+                            <button
+                              onClick={() => navigate("/cart")}
+                              className="cursor-pointer bg-pink-600 text-white uppercase text-[12px] font-bold px-4 py-2 rounded-lg shadow-md hover:bg-pink-700 transition-colors duration-200"
+                            >
+                              go to cart
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => addToCartHandler(product._id)}
+                              className="cursor-pointer uppercase text-[12px] font-bold bg-transparent text-black px-4 py-2 rounded-lg shadow-md hover:bg-gray-100 transition-colors duration-200"
+                            >
+                              Add to Cart
+                            </button>
+                          )}
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="w-full mt-6 flex justify-center items-center gap-3">
@@ -373,8 +378,8 @@ const Search = () => {
                 whileHover={{ scale: !hasPrevPage ? 1 : 1.05 }}
                 whileTap={{ scale: !hasPrevPage ? 1 : 0.95 }}
                 className={`px-4 py-2 rounded-lg text-white font-medium shadow-md transition-all duration-200 ${hasPrevPage
-                  ? "bg-gray-600 hover:bg-gray-700"
-                  : "bg-gray-400 cursor-not-allowed"
+                    ? "bg-gray-600 hover:bg-gray-700"
+                    : "bg-gray-400 cursor-not-allowed"
                   }`}
               >
                 -
@@ -388,8 +393,8 @@ const Search = () => {
                 whileHover={{ scale: !hasNextPage ? 1 : 1.05 }}
                 whileTap={{ scale: !hasNextPage ? 1 : 0.95 }}
                 className={`px-6 py-2 rounded-lg text-white font-medium shadow-md transition-all duration-200 ${hasNextPage
-                  ? "bg-indigo-600 hover:bg-indigo-700"
-                  : "bg-gray-400 cursor-not-allowed"
+                    ? "bg-indigo-600 hover:bg-indigo-700"
+                    : "bg-gray-400 cursor-not-allowed"
                   }`}
               >
                 +
@@ -420,9 +425,6 @@ const FilterSection = ({
 }) => {
   return (
     <>
-      <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-        Filters
-      </h2>
       <div className="space-y-8">
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-3">

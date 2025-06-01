@@ -1,4 +1,3 @@
-import React from "react";
 import { useAllOrdersQuery } from "../redux/api/order.api";
 import { useSelector } from "react-redux";
 import AdminLayout from "./AdminLayout";
@@ -16,7 +15,6 @@ const Order = () => {
     error,
   } = useAllOrdersQuery(
     { userId: user._id },
-    { refetchOnMountOrArgChange: true }
   );
 
   const handleManage = (id) => {
@@ -26,8 +24,6 @@ const Order = () => {
   return (
     <AdminLayout>
       <>
-        <h2 className="text-2xl font-semibold mb-4">Orders</h2>
-
         {isLoading ? (
           <div className="rounded-lg space-y-7">
             {[...Array(10)].map((_, i) => (
@@ -60,29 +56,29 @@ const Order = () => {
           <div className="bg-white rounded-lg shadow overflow-hidden">
             <div className="overflow-x-auto max-h-[560px] overflow-y-auto custom-scrollbar">
               <table className="min-w-full divide-y divide-gray-200 text-sm">
-                <thead className="bg-gray-100 sticky top-0 z-10">
+                <thead className="bg-gray-100 sticky top-0 z-10 font-ubuntu">
                   <tr>
-                    <th className="px-6 py-3 text-left font-semibold text-gray-700">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       User
                     </th>
-                    <th className="px-6 py-3 text-left font-semibold text-gray-700">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Total (₹)
                     </th>
-                    <th className="px-6 py-3 text-left font-semibold text-gray-700">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Discount (₹)
                     </th>
-                    <th className="px-6 py-3 text-left font-semibold text-gray-700">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Quantity
                     </th>
-                    <th className="px-6 py-3 text-left font-semibold text-gray-700">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Status
                     </th>
-                    <th className="px-6 py-3 text-left font-semibold text-gray-700">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Action
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100 bg-white">
+                <tbody className="divide-y divide-gray-100 bg-white font-montserrat ">
                   {orders.allOrders.map((order) => {
                     const totalQuantity = order.orderItems.reduce(
                       (sum, item) => sum + item.quantity,
@@ -101,7 +97,7 @@ const Order = () => {
                               "https://via.placeholder.com/40"
                             }
                             alt="avatar"
-                            className="w-10 h-10 rounded-full object-cover"
+                            className="w-10 h-10 hidden md:block  rounded-full object-cover"
                           />
                           <span className="font-medium text-gray-800">
                             {order.user?.username || "Unknown User"}
@@ -119,10 +115,10 @@ const Order = () => {
                         <td className="px-6 py-4">
                           <span
                             className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold ${order.status === "PENDING"
-                                ? "bg-yellow-100 text-yellow-700"
-                                : order.status === "DELIVERED"
-                                  ? "bg-green-100 text-green-700"
-                                  : "bg-gray-200 text-gray-700"
+                              ? "bg-yellow-100 text-yellow-700"
+                              : order.status === "DELIVERED"
+                                ? "bg-green-100 text-green-700"
+                                : "bg-gray-200 text-gray-700"
                               }`}
                           >
                             {order.status}

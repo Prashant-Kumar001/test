@@ -18,7 +18,7 @@ const MonthlyOrderTrendChart = ({ data }) => {
     }));
 
   return (
-    <div className="bg-white p-6 rounded-2xl ">
+    <div className="bg-white p-6  border-t-2 ">
       <h2 className="text-lg font-semibold text-gray-800 mb-4">
         Monthly Order Trends
       </h2>

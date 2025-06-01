@@ -27,9 +27,6 @@ const Charts = () => {
   return (
     <AdminLayout>
       <>
-        <h2 className="text-2xl font-bold text-gray-800 mb-4 text-start">
-          Dashboard Insights
-        </h2>
         {pie.isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6">
             {[...Array(2)].map((_, i) => (
@@ -47,19 +44,19 @@ const Charts = () => {
           </div>
         ) : (
           <div className="bg-white rounded-lg shadow overflow-hidden">
-            <section className="overflow-x-auto max-h-[560px] overflow-y-auto custom-scrollbar ">
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
+            <section className="overflow-x-auto max-h-[93vh] overflow-y-auto custom-scrollbar ">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 ">
                 <UserGenderPieChart users={users} />
                 <CategoryPieChart categories={category} />
                 <OrderStatusPieChart status={status} />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 place-items-center ">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6  place-items-center border-t pt-4">
                 <AgeDistributionChart ageDistribution={age} />
                 <StockAvailabilityChart stockAvailability={stock} />
               </div>
 
-              <div className="mt-4">
+              <div className=" border-t pt-4">
                 <RevenueDistributionChart revenueDistribution={revenue} />
               </div>
             </section>
