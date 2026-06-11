@@ -12,7 +12,8 @@ info: {
 
 servers: [
   {
-    url: "http://localhost:5000/api",
+    url: `${process.env.BASE_URL}/api`,
+    description: "Development server",
   },
 ],
 
