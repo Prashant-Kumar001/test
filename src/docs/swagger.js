@@ -515,7 +515,7 @@ const options = {
     },
   },
 
-  apis: [], // Add path to your route files here if you want to use JSDoc comments
+  apis: [], 
 };
 
 export default swaggerJsdoc(options);

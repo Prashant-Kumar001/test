@@ -1,2 +1,12 @@
 node_modules
 .env
+
+
+
+
+
+admin*
+docker-compose.yml
+cloudinary.js
+public
+redis.js
