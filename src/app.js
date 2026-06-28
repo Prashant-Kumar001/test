@@ -13,7 +13,6 @@ import authRoutes
 import postRoutes
   from "./routes/post.routes.js";
 import errorMiddleware from "./middleware/error.middleware.js";
-
 import suggestionRoutes from './public/suggestion.route.js'
 
 const app = express();
@@ -59,10 +58,6 @@ app.get("/swagger.json", (req, res) => {
 });  
 
 app.use(errorMiddleware);
-<<<<<<< HEAD
                  
-export default app;
-=======
 
 export default app;
->>>>>>> 9d880a94890582507b1b84dea03a77608fdd3718

@@ -33,7 +33,6 @@ const postSchema = new mongoose.Schema(
   }
 );
 
-// Add index for soft delete queries
 postSchema.index({ isDeleted: 1 });
 
 export default mongoose.model("Post", postSchema);
