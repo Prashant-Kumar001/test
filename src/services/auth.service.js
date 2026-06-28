@@ -12,7 +12,7 @@ export const registerUser = async (userData) => {
     throw new ApiError(409, "Email already registered");
   }
 
-  const hashedPassword = await bcrypt.hash(password, 12);
+  const hashedPassword = await bcrypt.hash(password, 10);
 
   const user = await User.create({
     username,

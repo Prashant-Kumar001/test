@@ -20,7 +20,7 @@ const app = express();
 
 app.use(cors(
   {
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:4200", "http://localhost:5173", "http://localhost:3000"],
     credentials: true,
   }
 ));
@@ -59,5 +59,10 @@ app.get("/swagger.json", (req, res) => {
 });  
 
 app.use(errorMiddleware);
+<<<<<<< HEAD
                  
 export default app;
+=======
+
+export default app;
+>>>>>>> 9d880a94890582507b1b84dea03a77608fdd3718

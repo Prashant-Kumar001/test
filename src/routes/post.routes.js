@@ -16,7 +16,7 @@ const router = express.Router();
 
 router.get("/", protect, getPosts);
 
-router.get("/:id", getPost);
+router.get("/:id", protect, getPost);
 
 router.post(
   "/",
